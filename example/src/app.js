@@ -328,7 +328,6 @@ const AuthChildWithPermit = () => (
 
 const routes = [
     {
-        path: "/",
         component: Root,
         routes: [
             {

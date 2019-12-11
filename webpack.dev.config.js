@@ -1,5 +1,7 @@
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+// 导入每次删除文件夹的插件
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
 	template: path.join(__dirname, "./example/src/index.html"),
@@ -36,7 +38,6 @@ module.exports = {
 			test: /\.(png|jpe?g|gif|bmp)$/i,
 			loader: 'url-loader',
 			options: {
-				limit: 10240,
 				name: 'images/[name]-[hash:8].[ext]'
 			},
 		}
@@ -44,6 +45,7 @@ module.exports = {
 	},
 	plugins: [
 		htmlWebpackPlugin,
+		new CleanWebpackPlugin(),
         new ExtractTextPlugin('style.css')
     ],
 	resolve: {

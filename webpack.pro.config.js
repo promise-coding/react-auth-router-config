@@ -53,8 +53,8 @@ module.exports = {
                     publicPath: '../'
                 })
             },
-            { test: /\.(jpg|png|gif|bmp|jpeg)$/, use: 'url-loader?limit=5000&name=images/[hash:8]-[name].[ext]' },
-            { test: /\.(ttf|eot|svg|woff|woff2)$/, use: 'url-loader?limit=5000&name=images/[hash:8]-[name].[ext]' },
+            { test: /\.(jpg|png|gif|bmp|jpeg)$/, use: 'url-loader?limit=5000&name=images/[name]-[hash:8].[ext]' },
+            { test: /\.(ttf|eot|svg|woff|woff2)$/, use: 'url-loader?limit=5000&name=images/[name]-[hash:8].[ext]' },
             { test: /\.(js|jsx)$/, use: 'babel-loader', exclude: /node_modules/ }
         ]
     }
