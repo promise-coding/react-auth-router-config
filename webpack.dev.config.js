@@ -31,7 +31,16 @@ module.exports = {
                             },}},
 					'sass-loader']
             })
-        }, { test: /\.(jpg|png|gif|bmp|jpeg)$/, use: 'url-loader?limit=5000&name=images/[hash:8]-[name].[ext]' },]
+		}, 
+		{
+			test: /\.(png|jpe?g|gif|bmp)$/i,
+			loader: 'url-loader',
+			options: {
+				limit: 10240,
+				name: 'images/[name]-[hash:8].[ext]'
+			},
+		}
+	]
 	},
 	plugins: [
 		htmlWebpackPlugin,
