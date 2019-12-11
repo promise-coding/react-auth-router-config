@@ -31,7 +31,7 @@ module.exports = {
                             },}},
 					'sass-loader']
             })
-        }]
+        }, { test: /\.(jpg|png|gif|bmp|jpeg)$/, use: 'url-loader?limit=5000&name=images/[hash:8]-[name].[ext]' },]
 	},
 	plugins: [
 		htmlWebpackPlugin,
@@ -41,7 +41,7 @@ module.exports = {
 		extensions: [".js", ".jsx"]
 	},
 	devServer: {
-		port: 3000
+		port: 3001
 	}
 };
 

@@ -1,35 +1,201 @@
-![NPM](https://img.shields.io/npm/l/react-npm-publish-demo.svg?style=popout) ![npm](https://img.shields.io/npm/v/react-npm-publish-demo.svg?style=flat-square)
-## react-npm-publish-demo
 
-这是一个发布react npm组件demo，支持css module、自定义打包配置，轻松上手   
+<p align="center">
+      <img alt="React Auth Router Config " width = "100" height = "100" src='./example/src/image/logo.png'/>
+</p> 
 
-# 如何使用
-1、下载demo  
-`git clone https://github.com/promise-coding/react-npm-publish-demo`   
-2、启动demo   
-安装依赖包    
-`npm install`  
-启动应用     
-`npm start`    
-访问http://localhost:3000即可  
-3、如何打包  
-生产包  
-`npm run build-dev`  
-之后你就会看到在example/dist目录下产生的打包文件；  
-本地环境包  
-`npm run build-pro`  
-同理，在lib目录下生成style文件和index文件，此时的index.js就可以发布啦。  
+![NPM](https://img.shields.io/npm/l/react-auth-router-config.svg?style=popout) 
+![npm](https://img.shields.io/npm/v/react-auth-router-config.svg?style=flat-square)
 
-4、发布到npm  
--  首先你注册一个npm账户，用户名和密码记住咯；  
--  更改package.json中相应的配置，如：  
-   ```
-     "name": "react-npm-publish-demo",
-     "version": "1.0.0",
-     "description": "react npm publish demo",
-     "repository": "promise-coding/react-npm-publish-demo"
-   ```
--  执行`npm adduser`按提示输入用户名和密码；  
--  更改版本号后就可执行`npm publish`，看到`+ react-object-logger@1.1.0
-`说明发布成功，并且会有邮件通知哦；
--  一个好的组件需要写一份好的readme，方便用户使用；
+## react-auth-router-config
+
+react-auth-router-config is an extension for [react-router-config](https://www.npmjs.com/package/react-router-config) which helps you authenticating access to specific routes.
+
+- generate routes based on your own auth policy
+- customize your own no-permission component/render
+- matchRoutes depends on your own auth policy; 
+
+# Installation  
+`npm install react-auth-config-router`   
+ 
+# Examples  
+[basic demo](https://promise-coding.github.io/react-auth-router-config/)
+
+# Usage  
+```js   
+import React from 'react'
+import { render } from 'react-dom';
+import { BrowserRouter, Link } from "react-router-dom";
+import { 
+  authMatchRoutes, 
+  authCallbackMatchRoutes,
+  authRenderRoutes, 
+  authCallbackRenderRoutes } from 'react-auth-config-router';
+
+const routes = [
+    {
+        component: Root,
+        routes: [
+            {
+                path: "/",
+                exact: true,
+                component: Home
+            },
+            {
+                path: "/child/:id",
+                component: Child,
+                routes: [
+                    {
+                        path: "/child/:id/grand-child-render",
+                        exact: true,
+                        render: () => <div>Grand Child Render</div>
+                    }
+                ]
+            }
+        ]
+    }
+];
+
+render(
+    <BrowserRouter>
+        {authRenderRoutes(routes, true)}
+    </BrowserRouter>,
+    document.getElementById('root'));
+```
+
+# API  
+## 1、authRenderRoutes 
+`authRenderRoutes(routes, hasPermission, forbiddenPage, extraProps, switchProps)`  
+
+#### Parameters  
+- routes  
+the route configuration  
+**Note:**  
+auth router config provides a route attribute `noAuth`, which helps you ignore `hasPermission` authenticating.  
+routes config demo as below, and `path: "/test/:id"` will be out of `hasPermission` authenticating(it means the path has permission).
+```js
+const routes = [
+        {
+            component: Root,
+            routes: [
+                {
+                    path: "/",
+                    exact: true,
+                    permissions: [],
+                    component: Home
+                },
+                {
+                    path: "/test/:id",
+                    component: Child,
+                    noAuth: true,
+                    routes: [
+                        {
+                            path: "/test/:id/test-child",
+                            component: GrandChild
+                        }
+                    ]
+                },
+                {
+                    path: "/child/:id",
+                    component: Child,
+                    routes: [
+                        {
+                            path: "/child/:id/grand-child",
+                            component: GrandChild
+                        }
+                    ]
+                }
+            ]
+        }
+    ];
+```
+- hasPermission  
+this is a global param to control whether a route component/render should be presented.
+- forbiddenPage   
+if a route has no permission, the forbiddenPage would be presented.  
+`forbiddenPage` could be functional component or class component.  
+Default:   
+```js
+ const ForbiddenPage = () => (
+      <div>
+          <h3>403 Forbidden!</h3>
+      </div>
+);
+```   
+- extraProps  
+Default: `{}`  
+- switchProps  
+Default: `{}`  
+
+## 2、authCallbackRenderRoutes  
+`authCallbackRenderRoutes(routes, authCallback, forbiddenPage,
+                          extraProps, switchProps)`
+#### Parameters  
+all params are same as `authRenderRoutes` except `authCallback`.  
+- authCallback  
+we provide a route attribute `permissions` to authenticating, and `permissions` will be passed to the callback function `authCallback`.  
+**Note:**   
+`authCallback` must be synchronous;  
+if you do not pass any callback function and it means all routes has permission;
+```js
+const routes = [
+    {
+        component: Root,
+        routes: [
+            {
+                path: "/",
+                exact: true,
+                permissions: [],
+                component: Home
+            },
+            {
+                path: "/test/:id",
+                component: Child,
+                permissions: ['test'],
+                routes: [
+                    {
+                        path: "/test/:id/test-child",
+                        component: GrandChild
+                    }
+                ]
+            },
+            {
+                path: "/child/:id",
+                component: Child,
+                permissions: ['master'],
+                routes: [
+                    {
+                        path: "/child/:id/grand-child",
+                        component: GrandChild
+                    }
+                ]
+            }
+        ]
+    }
+];
+
+function authCallback(permissions) {
+    return permissions.includes('master');
+}
+```
+
+## 3、authMatchRoutes  
+`authMatchRoutes(hasPermission, routes, pathname, branch)`  
+
+### Parameters
+all params are same as matchRoutes of [react-router-config](https://www.npmjs.com/package/react-router-config) except `hasPermission`;   
+- hasPermission  
+it is same as the param `hasPermission` of `authRenderRoutes`.  
+you could go to [basic demo](https://promise-coding.github.io/react-auth-router-config/) for details.
+
+## 3、authCallbackMatchRoutes  
+`authCallbackMatchRoutes(authCallback, routes, pathname, branch)`
+
+### Parameters  
+all params are same as matchRoutes of [react-router-config](https://www.npmjs.com/package/react-router-config) except `authCallback`;     
+- authCallback   
+it is same as the param `hasPermission` of `authCallbackRenderRoutes`.  
+you could go to [basic demo](https://promise-coding.github.io/react-auth-router-config/) for details.  
+**Note:**   
+`authCallback` must be synchronous;  
+if you do not pass any callback function and it means all routes has permission;
+
