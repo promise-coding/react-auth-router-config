@@ -1,3 +1,9 @@
+## react-auth-router-config
+
+react-auth-router-config is an extension for [react-router-config](https://www.npmjs.com/package/react-router-config) which helps you authenticating access to specific routes.
+- generate routes based on your own auth policy
+- customize your own no-permission component/render
+- matchRoutes depends on your own auth policy; 
 
 <p align="center">
       <img alt="React Auth Router Config " width = "100" height = "100" src='./example/src/image/logo.png'/>
@@ -5,14 +11,6 @@
 
 ![NPM](https://img.shields.io/npm/l/react-auth-router-config.svg?style=popout) 
 ![npm](https://img.shields.io/npm/v/react-auth-router-config.svg?style=flat-square)
-
-## react-auth-router-config
-
-react-auth-router-config is an extension for [react-router-config](https://www.npmjs.com/package/react-router-config) which helps you authenticating access to specific routes.
-
-- generate routes based on your own auth policy
-- customize your own no-permission component/render
-- matchRoutes depends on your own auth policy; 
 
 # Installation  
 `npm install react-auth-config-router`   

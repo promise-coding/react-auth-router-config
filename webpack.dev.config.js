@@ -12,7 +12,8 @@ module.exports = {
 	entry: path.join(__dirname, "./example/src/app.js"),
 	output: {
 		path: path.join(__dirname, "example/dist"),
-		filename: "[name].bundle.js"
+		filename: "[name].bundle.js",
+		publicPath: "/react-auth-router-config/"
 	},
     mode: 'development',
 	module: {
@@ -52,7 +53,10 @@ module.exports = {
 		extensions: [".js", ".jsx"]
 	},
 	devServer: {
-		port: 3001
+		port: 3001,
+		historyApiFallback: {
+			index: "/react-auth-router-config/"
+		}
 	}
 };
 

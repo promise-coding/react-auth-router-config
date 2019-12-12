@@ -1,6 +1,6 @@
 {
   "name": "react-auth-router-config",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "repository": "promise-coding/react-auth-router-config",
   "main": "lib/index.js",

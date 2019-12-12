@@ -415,8 +415,7 @@ const routes = [
 ];
 
 render(
-    <BrowserRouter>
-        {/* kick it all off with the root route */}
+    <BrowserRouter basename={'/react-auth-router-config'}>
         {authRenderRoutes(routes, true)}
     </BrowserRouter>,
     document.getElementById('root'));
